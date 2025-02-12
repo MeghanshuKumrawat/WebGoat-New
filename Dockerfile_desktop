@@ -45,3 +45,9 @@ RUN \
 ENV JAVA_HOME=/config/java-jdk
 
 WORKDIR /config/Desktop
+
+# Create a non-root user and switch to it
+RUN useradd -m webgoatuser && \
+    chown -R webgoatuser:webgoatuser /config
+
+USER webgoatuser
