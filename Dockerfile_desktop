@@ -44,4 +44,7 @@ RUN \
 
 ENV JAVA_HOME=/config/java-jdk
 
+RUN useradd -ms /bin/bash webgoatuser
+USER webgoatuser
+
 WORKDIR /config/Desktop
