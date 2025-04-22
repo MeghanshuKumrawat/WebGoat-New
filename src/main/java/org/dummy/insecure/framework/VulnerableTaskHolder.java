@@ -34,40 +34,32 @@ public class VulnerableTaskHolder implements Serializable {
   }
 
   /**
-   * Execute a task when de-serializing a saved or received object.
+   * Safe implementation of readObject that does not execute external commands.
+   * Deserializes the object data but does not perform any dangerous operations.
    *
-   * @author stupid develop
+   * @param stream the ObjectInputStream to read data from
+   * @throws Exception if deserialization fails
    */
   private void readObject(ObjectInputStream stream) throws Exception {
-    // unserialize data so taskName and taskAction are available
+    // Standard deserialization to restore object state
     stream.defaultReadObject();
 
-    // do something with the data
-    log.info("restoring task: {}", taskName);
-    log.info("restoring time: {}", requestedExecutionTime);
+    // Log information about the deserialized object
+    log.info("Deserializing task: {}", taskName);
+    log.info("Deserialization time: {}", LocalDateTime.now());
+    log.info("Original requested execution time: {}", requestedExecutionTime);
 
+    // Validate time constraints if needed
     if (requestedExecutionTime != null
         && (requestedExecutionTime.isBefore(LocalDateTime.now().minusMinutes(10))
             || requestedExecutionTime.isAfter(LocalDateTime.now()))) {
-      // do nothing is the time is not within 10 minutes after the object has been created
       log.debug(this.toString());
-      throw new IllegalArgumentException("outdated");
+      throw new IllegalArgumentException("Task execution time outside allowed window");
     }
 
-    // condition is here to prevent you from destroying the goat altogether
-    if ((taskAction.startsWith("sleep") || taskAction.startsWith("ping"))
-        && taskAction.length() < 22) {
-      log.info("about to execute: {}", taskAction);
-      try {
-        Process p = Runtime.getRuntime().exec(taskAction);
-        BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        String line = null;
-        while ((line = in.readLine()) != null) {
-          log.info(line);
-        }
-      } catch (IOException e) {
-        log.error("IO Exception", e);
-      }
+    // Log attempt to execute a command, but don't actually execute it
+    if ((taskAction != null) && (taskAction.startsWith("sleep") || taskAction.startsWith("ping"))) {
+      log.warn("Command execution in deserialization blocked for security: {}", taskAction);
     }
   }
 }
