@@ -44,4 +44,13 @@ RUN \
 
 ENV JAVA_HOME=/config/java-jdk
 
+# Create non-root user and set permissions
+RUN \
+ useradd -ms /bin/bash webgoat && \
+ mkdir -p /config/Desktop && \
+ chown -R webgoat:webgoat /config
+
+# Switch to non-root user
+USER webgoat
+
 WORKDIR /config/Desktop
