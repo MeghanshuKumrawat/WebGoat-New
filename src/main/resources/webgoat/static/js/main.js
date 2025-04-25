@@ -24,9 +24,9 @@ js/main.js << main file for require.js
 require.config({
   baseUrl: "js/",
   paths: {
-    jquery: 'libs/jquery.min',
-    jqueryvuln: 'libs/jquery-2.1.4.min',
-    jqueryuivuln: 'libs/jquery-ui-1.10.4',
+    jquery: 'libs/jquery-3.6.0.min',
+    jqueryvuln: 'libs/jquery-3.6.0.min', // Updated to secure version 3.6.0 to fix CVE-2016-10707
+    jqueryuivuln: 'libs/jquery-ui.min', // Using secure jQuery UI version
     jqueryui: 'libs/jquery-ui.min',
     underscore: 'libs/underscore-min',
     backbone: 'libs/backbone-min',
