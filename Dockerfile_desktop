@@ -9,6 +9,10 @@ COPY config/desktop/start_webgoat.sh /config/start_webgoat.sh
 COPY config/desktop/start_zap.sh /config/start_zap.sh
 COPY config/desktop/WebGoat.txt /config/Desktop/
 
+# Create non-root user
+RUN useradd -m -s /bin/bash webgoat_user && \
+    chown -R webgoat_user:webgoat_user /config
+
 RUN \
  apt-get update &&  \
  apt-get --yes install vim nano gzip
@@ -43,5 +47,8 @@ RUN \
  echo "PATH=$PATH:$JAVA_HOME/bin" >> .bash_aliases
 
 ENV JAVA_HOME=/config/java-jdk
+
+# Switch to non-root user
+USER webgoat_user
 
 WORKDIR /config/Desktop
