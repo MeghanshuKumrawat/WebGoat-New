@@ -52,6 +52,8 @@ public class VulnerableComponentsLessonTest {
     xstream.setClassLoader(Contact.class.getClassLoader());
     xstream.alias("contact", ContactImpl.class);
     xstream.ignoreUnknownElements();
+    xstream.denyTypes(new String[] {"java.beans.EventHandler"});
+    xstream.denyTypesByRegExp(new String[] {".*\\.ProcessBuilder.*"});
     assertThat(xstream.fromXML(contact)).isNotNull();
   }
 
@@ -62,6 +64,8 @@ public class VulnerableComponentsLessonTest {
     xstream.setClassLoader(Contact.class.getClassLoader());
     xstream.alias("contact", ContactImpl.class);
     xstream.ignoreUnknownElements();
+    xstream.denyTypes(new String[] {"java.beans.EventHandler"});
+    xstream.denyTypesByRegExp(new String[] {".*\\.ProcessBuilder.*"});
     Exception e =
         assertThrows(
             RuntimeException.class,
@@ -75,6 +79,8 @@ public class VulnerableComponentsLessonTest {
     xstream.setClassLoader(Contact.class.getClassLoader());
     xstream.alias("contact", ContactImpl.class);
     xstream.ignoreUnknownElements();
+    xstream.denyTypes(new String[] {"java.beans.EventHandler"});
+    xstream.denyTypesByRegExp(new String[] {".*\\.ProcessBuilder.*"});
     Exception e =
         assertThrows(
             StreamException.class, () -> ((Contact) xstream.fromXML("bullssjfs")).getFirstName());
