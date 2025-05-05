@@ -49,6 +49,8 @@ public class VulnerableComponentsLessonTest {
   @Test
   public void testTransformation() throws Exception {
     XStream xstream = new XStream();
+    // Security setup for XStream to prevent CVE-2021-39139
+    xstream.allowTypesByWildcard(new String[] {"org.owasp.webgoat.lessons.vulnerablecomponents.**"});
     xstream.setClassLoader(Contact.class.getClassLoader());
     xstream.alias("contact", ContactImpl.class);
     xstream.ignoreUnknownElements();
@@ -59,6 +61,8 @@ public class VulnerableComponentsLessonTest {
   @Disabled
   public void testIllegalTransformation() throws Exception {
     XStream xstream = new XStream();
+    // Security setup for XStream to prevent CVE-2021-39139
+    xstream.allowTypesByWildcard(new String[] {"org.owasp.webgoat.lessons.vulnerablecomponents.**"});
     xstream.setClassLoader(Contact.class.getClassLoader());
     xstream.alias("contact", ContactImpl.class);
     xstream.ignoreUnknownElements();
@@ -72,6 +76,8 @@ public class VulnerableComponentsLessonTest {
   @Test
   public void testIllegalPayload() throws Exception {
     XStream xstream = new XStream();
+    // Security setup for XStream to prevent CVE-2021-39139
+    xstream.allowTypesByWildcard(new String[] {"org.owasp.webgoat.lessons.vulnerablecomponents.**"});
     xstream.setClassLoader(Contact.class.getClassLoader());
     xstream.alias("contact", ContactImpl.class);
     xstream.ignoreUnknownElements();
